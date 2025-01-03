@@ -5,7 +5,7 @@
     <div class="order-0">
       <!-- navbar brand/logo -->
       <a class="navbar-brand block" href="{{ site.Home.RelPermalink }}">
-        {{ .Site.Title }}
+        {{ partial "logo" }}
       </a>
     </div>
     <!-- navbar toggler -->
@@ -24,6 +24,7 @@
           transform="rotate(45 10 10)"></polygon>
       </svg>
     </label>
+    <!-- /navbar toggler -->
 
     <!-- main navbar -->
     <ul
@@ -94,6 +95,15 @@
           </li>
         {{ end }}
       {{ end }}
+      {{ if site.Params.navigation_button.enable }}
+        <li class="mt-4 inline-block lg:hidden">
+          <a
+            class="btn btn-outline-primary btn-sm"
+            href="{{ site.Params.navigation_button.link | relLangURL }}">
+            {{ site.Params.navigation_button.label }}
+          </a>
+        </li>
+      {{ end }}
     </ul>
 
     <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
@@ -101,7 +111,11 @@
         {{ if .enable }}
           <button
             aria-label="search"
+            {{ if and (not site.Params.navigation_button.enable) (not site.Params.theme_switcher)}}
+            class="border-border text-dark hover:text-primary dark:border-darkmode-border mr-5 inline-block border-r lg:border-r-0 pr-5 lg:pr-0 text-xl dark:text-white dark:hover:text-darkmode-primary"
+            {{ else }}
             class="border-border text-dark hover:text-primary dark:border-darkmode-border mr-5 inline-block border-r pr-5 text-xl dark:text-white dark:hover:text-darkmode-primary"
+            {{ end }}
             data-target="search-modal">
             <i class="fa-solid fa-search"></i>
           </button>
@@ -110,6 +124,16 @@
 
       {{ partial "components/language-switcher" (dict "Context" . "Class" "mr-5 pl-2 py-1 dark:bg-darkmode-theme-light rounded") }}
       {{ partial "components/theme-switcher" (dict "Class" "mr-5") }}
+
+
+      <!-- navigation btn -->
+      {{ if site.Params.navigation_button.enable }}
+        <a
+          href="{{ site.Params.navigation_button.link | relLangURL }}"
+          class="btn btn-outline-primary btn-sm hidden lg:inline-block">
+          {{ site.Params.navigation_button.label }}
+        </a>
+      {{ end }}
     </div>
   </nav>
 </header>
